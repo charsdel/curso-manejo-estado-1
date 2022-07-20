@@ -1,0 +1,35 @@
+import { render } from "@testing-library/react";
+import React from "react";
+
+
+
+function UseState({msj}){
+
+    const [error, setError] = React.useState(true);
+   
+    return (
+        <div>
+            <h2> Eliminar {msj}</h2>
+            <p> Por favor, escribe el codigo de seguridad </p>
+
+
+            {error && (
+
+                <p>Error: el codigo es incorrecto </p>
+            )}
+
+            <input placeholder="Codigo de seguridad" />
+            <button
+            
+            onClick={() => setError( !error ) }
+
+            > Comprobar </button>
+
+        </div>
+
+    );
+
+
+}
+
+export {UseState};

@@ -1,35 +1,54 @@
 import { render } from "@testing-library/react";
 import React from "react";
 
-
+const SECURITY_CODE = 'paradigma'
 
 function UseState({msj}){
 
-    const [error, setError] = React.useState(true);
+
+
+    const [value, setValue] = React.useState('');
+
+
+    const [error, setError] = React.useState(false);
 
     const [loading, setLoading] = React.useState(false);
 
-
+    console.log(value)
 
 
     React.useEffect(() => {
 
-        console.log("empezando el efecto")
+       // console.log("empezando el efecto")
         if(!!loading){
+
+            //
+            //setError(false)
+
             setTimeout(() => {
 
-                console.log("Haciendo la Validacion")
+
+                //comparamos el valor de inpur contra el codigo
+                if(value === SECURITY_CODE){
+
+                    console.log('validacion correcta')
+                    //setError(false)
+                }else{
+                    setError(true)
+                }
+
 
                 setLoading(false);
 
-                console.log("terminando la Validacion")
+
+                
 
 
             },3000);
 
            
         }
-        console.log("terminamos el efecto")
+        //console.log("terminamos el efecto")
 
     },[loading])
 
@@ -40,7 +59,7 @@ function UseState({msj}){
             <p> Por favor, escribe el codigo de seguridad </p>
 
 
-            {error && (
+            {(error && !loading) && (
 
                 <p>Error: el codigo es incorrecto </p>
             )}
@@ -50,10 +69,28 @@ function UseState({msj}){
                 <p>Cargando ... </p>
             )}
 
-            <input placeholder="Codigo de seguridad" />
+            <input 
+                placeholder="Codigo de seguridad"
+                value={value}
+
+                //en el evento del botton se trae el valor del input y lo guarda en el estado
+                onChange ={(event)=> {
+                   setValue(event.target.value)
+
+                }
+                    
+                
+                }
+             />
             <button
             
-            onClick={() => setLoading( true) }
+
+            //cuando en in
+            onClick={() => {
+                    //setError(false);
+                    setLoading(true);
+                }
+            }
 
             > Comprobar </button>
 

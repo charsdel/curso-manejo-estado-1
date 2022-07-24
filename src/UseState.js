@@ -6,6 +6,17 @@ const SECURITY_CODE = 'paradigma'
 function UseState({msj}){
 
 
+    //de esta manera se colocan los estados en un objeto
+    const [state, setState ] = React.useState({
+
+        value: '',
+        error: false,
+        loading: false
+
+    });
+
+
+
 
     const [value, setValue] = React.useState('');
 
@@ -20,7 +31,7 @@ function UseState({msj}){
     React.useEffect(() => {
 
        // console.log("empezando el efecto")
-        if(!!loading){
+        if(!!state.loading){
 
             //
             //setError(false)
@@ -29,16 +40,31 @@ function UseState({msj}){
 
 
                 //comparamos el valor de inpur contra el codigo
-                if(value === SECURITY_CODE){
+                if(state.value === SECURITY_CODE){
 
+                    setState({
+                        ... state,
+                        error: false,
+
+                        loading: false,
+
+                    });
                     console.log('validacion correcta')
                     //setError(false)
                 }else{
-                    setError(true)
+
+                    setState({
+                        ... state,
+
+                        error: true,
+                        loading: false,
+
+                    });
+                    //setError(true)
                 }
 
 
-                setLoading(false);
+                //setLoading(false);
 
 
                 
@@ -50,7 +76,7 @@ function UseState({msj}){
         }
         //console.log("terminamos el efecto")
 
-    },[loading])
+    },[state.loading])
 
    
     return (
@@ -59,23 +85,29 @@ function UseState({msj}){
             <p> Por favor, escribe el codigo de seguridad </p>
 
 
-            {(error && !loading) && (
+            {(state.error && !state.loading) && (
 
                 <p>Error: el codigo es incorrecto </p>
             )}
 
-            {loading && (
+            {state.loading && (
 
                 <p>Cargando ... </p>
             )}
 
             <input 
                 placeholder="Codigo de seguridad"
-                value={value}
+                value={state.value}
 
                 //en el evento del botton se trae el valor del input y lo guarda en el estado
                 onChange ={(event)=> {
-                   setValue(event.target.value)
+
+                    setState({
+                        ... state,
+
+                        value: event.target.value,
+
+                    });
 
                 }
                     
@@ -88,7 +120,12 @@ function UseState({msj}){
             //cuando en in
             onClick={() => {
                     //setError(false);
-                    setLoading(true);
+                    setState({
+                        ... state,
+
+                        loading: true,
+
+                    });
                 }
             }
 

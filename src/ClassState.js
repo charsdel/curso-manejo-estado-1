@@ -2,6 +2,7 @@ import React from "react";
 
 import { Loading } from "./Loading";
 
+const SECURITY_CODE = 'paradigma'
 
 class ClassState extends React.Component{
 
@@ -11,8 +12,9 @@ class ClassState extends React.Component{
 
         this.state = {
             
-            error: true,
-            loading: true,
+            error: false,
+            loading: false,
+            value: ''
 
         }
 
@@ -25,17 +27,27 @@ class ClassState extends React.Component{
 
     //se ejecuta cuando se actualiza el estado
     componentDidUpdate(){
-        console.log('componentDidUpdate')
+       // console.log('componentDidUpdate')
 
         if(!!this.state.loading){ //gracias a esta validacion no enta en un bucle infinito
             setTimeout(() => {
 
-                console.log("Haciendo la Validacion")
+                //console.log("Haciendo la Validacion")
 
-                this.setState({loading:false});
+
+                if(this.state.value === SECURITY_CODE){
+
+                     this.setState({error:false, loading: false});   
+                    //setError(false)
+                }else{
+                    this.setState({error:true, loading: false});
+                }
+
+
+               
                 //setLoading(false);
 
-                console.log("terminando la Validacion")
+                ///console.log("terminando la Validacion")
 
 
             },3000);
@@ -64,7 +76,7 @@ class ClassState extends React.Component{
                 <p> Por favor, escribe el codigo de seguridad </p>
 
                 {
-                    this.state.error && (
+                    (this.state.error && !this.state.loading)&& (
 
                         <p>Error: el codigo es incorrecto</p>
                     )
@@ -78,7 +90,14 @@ class ClassState extends React.Component{
 
                 }
 
-                <input placeholder="Codigo de seguridad" />
+                <input 
+                    placeholder="Codigo de seguridad"
+                    value={ this.state.value}
+                    onChange = {(event) =>{
+                    
+                            this.setState({value: event.target.value})
+                    }}
+                 />
                 <button
                     //onClick={()=> this.setState({error: !this.state.error})}
                     onClick={()=> this.setState({loading: true })}

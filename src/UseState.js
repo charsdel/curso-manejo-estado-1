@@ -11,7 +11,10 @@ function UseState({msj}){
 
         value: '',
         error: false,
-        loading: false
+        loading: false,
+        deleted:false,
+        confirmed: false
+
 
     });
 
@@ -45,8 +48,8 @@ function UseState({msj}){
                     setState({
                         ... state,
                         error: false,
-
                         loading: false,
+                        confirmed: true
 
                     });
                     console.log('validacion correcta')
@@ -78,62 +81,121 @@ function UseState({msj}){
 
     },[state.loading])
 
-   
-    return (
-        <div>
-            <h2> Eliminar {msj}</h2>
-            <p> Por favor, escribe el codigo de seguridad </p>
+   if (!state.deleted && !state.confirmed){
+        return (
+            <div>
+                <h2> Eliminar {msj}</h2>
+                <p> Por favor, escribe el codigo de seguridad </p>
 
 
-            {(state.error && !state.loading) && (
+                {(state.error && !state.loading) && (
 
-                <p>Error: el codigo es incorrecto </p>
-            )}
+                    <p>Error: el codigo es incorrecto </p>
+                )}
 
-            {state.loading && (
+                {state.loading && (
 
-                <p>Cargando ... </p>
-            )}
+                    <p>Cargando ... </p>
+                )}
 
-            <input 
-                placeholder="Codigo de seguridad"
-                value={state.value}
+                <input 
+                    placeholder="Codigo de seguridad"
+                    value={state.value}
 
-                //en el evento del botton se trae el valor del input y lo guarda en el estado
-                onChange ={(event)=> {
+                    //en el evento del botton se trae el valor del input y lo guarda en el estado
+                    onChange ={(event)=> {
 
-                    setState({
-                        ... state,
+                        setState({
+                            ... state,
 
-                        value: event.target.value,
+                            value: event.target.value,
 
-                    });
+                        });
 
-                }
+                    }
+                        
                     
+                    }
+                />
+                <button
+                
+
+                //cuando en in
+                onClick={() => {
+                        //setError(false);
+                        setState({
+                            ... state,
+
+                            loading: true,
+
+                        });
+                    }
+                }
+
+                > Comprobar </button>
+
+            </div>
+
+        );
+   }else if(!!state.confirmed && !state.deleted){
+    return(
+
+        <React.Fragment>
+            <p> pedimos confirmacion</p>
+            <button
+                //en react cuando se trabaja con est
+                onClick={()=>
+                    {
+                        setState({
+                            ...state,
+                            deleted:true,
+                        
+                        })
+                    } 
                 
                 }
-             />
+            > si, eliminar</button>
             <button
-            
-
-            //cuando en in
-            onClick={() => {
-                    //setError(false);
-                    setState({
-                        ... state,
-
-                        loading: true,
-
-                    });
+                 onClick={()=>
+                    {
+                        setState({
+                            ...state,
+                            confirmed:false,
+                        
+                        })
+                    } 
+                
                 }
-            }
 
-            > Comprobar </button>
-
-        </div>
-
+            >no, me arrepenti</button>
+        </React.Fragment>
     );
+   }else{
+
+    return(
+        <React.Fragment>
+            <button
+                //en react cuando se trabaja con est
+                onClick={()=>
+                    {
+                        setState({
+                            ...state,
+                            deleted:false,
+                            confirmed: false,
+                            value: '',
+
+                        
+                        })
+                    } 
+                
+                }
+            > resetear y volver atras</button>
+           
+        </React.Fragment>
+    );
+
+   }
+    
 
 
 }

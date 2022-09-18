@@ -1,6 +1,6 @@
 
 import {UseState} from './UseState.js'
-import {ClassState} from './ClassState.js'
+import {UseReducer} from './UseReducer.js'
 
 import './App.css';
 
@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       
       <UseState msj = "carlos"/>
-      <ClassState msj = "pros" />
+      <UseReducer msj = "Use reducer" />
 
     </div>
   );

@@ -18,9 +18,6 @@ function UseState({msj}){
 
     });
 
-
-
-
     const [value, setValue] = React.useState('');
 
 
@@ -29,6 +26,72 @@ function UseState({msj}){
     const [loading, setLoading] = React.useState(false);
 
     console.log(value)
+
+    
+    const onConfirm = () =>{
+
+        setState({
+            ... state,
+            error: false,
+            loading: false,
+            confirmed: true
+
+        });
+        console.log('validacion correcta')
+    };
+
+    const onError = () =>{
+
+        setState({
+            ... state,
+
+            error: true,
+            loading: false,
+
+        });
+    };
+
+
+    const onWrite = (newValue) =>{
+
+        setState({
+            ... state,
+
+            value: newValue,
+
+        });
+    };
+
+
+    const onCheck = () =>{
+
+        setState({
+            ... state,
+
+            loading: true,
+
+        });
+    };
+
+    const onDelete = () =>{
+
+        setState({
+            ...state,
+            deleted:true,
+        
+        });
+    }; 
+
+    const onReset = ()=>{
+
+        setState({
+            ...state,
+            confirmed:false,
+            deleted: false,
+            value: '',
+        
+        });
+    };
 
 
     React.useEffect(() => {
@@ -45,24 +108,11 @@ function UseState({msj}){
                 //comparamos el valor de inpur contra el codigo
                 if(state.value === SECURITY_CODE){
 
-                    setState({
-                        ... state,
-                        error: false,
-                        loading: false,
-                        confirmed: true
-
-                    });
-                    console.log('validacion correcta')
+                    onConfirm();
                     //setError(false)
                 }else{
 
-                    setState({
-                        ... state,
-
-                        error: true,
-                        loading: false,
-
-                    });
+                    onError();
                     //setError(true)
                 }
 
@@ -105,12 +155,7 @@ function UseState({msj}){
                     //en el evento del botton se trae el valor del input y lo guarda en el estado
                     onChange ={(event)=> {
 
-                        setState({
-                            ... state,
-
-                            value: event.target.value,
-
-                        });
+                        onWrite(event.target.value);
 
                     }
                         
@@ -123,12 +168,7 @@ function UseState({msj}){
                 //cuando en in
                 onClick={() => {
                         //setError(false);
-                        setState({
-                            ... state,
-
-                            loading: true,
-
-                        });
+                      onCheck();
                     }
                 }
 
@@ -146,11 +186,7 @@ function UseState({msj}){
                 //en react cuando se trabaja con est
                 onClick={()=>
                     {
-                        setState({
-                            ...state,
-                            deleted:true,
-                        
-                        })
+                        onDelete();
                     } 
                 
                 }
@@ -158,11 +194,7 @@ function UseState({msj}){
             <button
                  onClick={()=>
                     {
-                        setState({
-                            ...state,
-                            confirmed:false,
-                        
-                        })
+                        onReset();
                     } 
                 
                 }
